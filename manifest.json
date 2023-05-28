@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "YAFFeather",
+  "version": "3.5.2",
+  "description": "Yet Another Fork of Feather. Originally by sw33ze, tweaked by Alex.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [{
+    "matches": [
+      "https://*.nationstates.net/*"
+    ],
+    "js": [
+      "content.js"
+    ]
+  }],
+  "browser_specific_settings":{
+	  "gecko":{
+		  "id":"yaffeather@alexfromnationstates"
+	  }
+  }
+}
