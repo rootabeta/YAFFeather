@@ -16,7 +16,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 			case 'KeyQ': // go back
 				window.history.back();
 				break;
-			case 'KeyU': // check if you updated
+			case 'KeyG': // check if you updated
 				window.location.assign("https://www.nationstates.net/page=reports/view=self/filter=change/template-overall=none");
 				break;
 			case 'KeyS': // endorse nation - NOT toggle endorsement! Together with my tampermonkey DidIEndo.js script, this should make endo confusion a thing of the past.

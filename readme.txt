@@ -9,7 +9,7 @@ KEY LIST:
 A - Refresh page
 T - Set template-overall=none for faster pageloads
 Q - Go back
-U - Check if your nation updated
+G - Check if your nation updated
 S - Endorse nation
 L - Unendorse nation
 O - Ban nation
@@ -22,6 +22,9 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
+3.5.3
+Moved nation-update feed to G for ease of use mid-tag
+
 3.5.2
 Re-enabled applying to WA
 
