@@ -49,10 +49,21 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				}
 				break;
 			case 'KeyF': // move to region whose page you're currently on
+				// From Notaname
+                if (window.location.href.includes("region=")) {
+                    if (document.getElementsByName('move_region').length == 0) window.location.reload();
+                    else document.getElementsByName('move_region')[0].click();
+                } else if (window.location.href.includes("change_region")) {
+                    document.getElementsByClassName('rlink')[0].click();
+                }
+                break;
+
+				/*
 				if (window.location.href.includes("region=")) {
 					document.getElementsByName('move_region')[0].click();
 				}
 				break;
+				*/
 			case 'KeyB': // move to suspicious
 				if (window.location.href == "https://www.nationstates.net/region=suspicious") {
 					document.getElementsByName('move_region')[0].click();
@@ -73,18 +84,22 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				}
 				break;
 			case 'KeyZ': // go to current region page
+				// document.getElementById("panelregionbar").children[0].href 
 				if (window.location.href == "https://www.nationstates.net/page=change_region") { // if on post-relocation page
-					//document.getElementsByClassName('info')[0].getElementsByClassName('rlink')[0].click()
 					document.getElementsByClassName('info')[0].getElementsByClassName('rlink')[0].click(); // click the region link on the relocation page
 				} else { // otherwise just click the region link through the sidebar
-					document.getElementById('panelregionbar').querySelector('a').click();
+//					document.getElementById('panelregionbar').querySelector('a').click();
+					window.location.href = document.getElementById("panelregionbar").children[0].href 
 				}
 				break;
 			case 'KeyX': // Copy the current nation to the clipboard
 				// If we are looking at the WA application page, grab the link from the application we're looking at instead of our current nation
 				// I've had issues where I hit X too quickly and it gives me the puppet I just switched off of - this should fix that.
-				if (window.location.href.includes("https://www.nationstates.net/page=join_WA?nation=") && document.getElementsByTagName("form").length > 1) { //Safety net, since I can't test WA right now - make sure we have a second form to query.
-					var NationURL = document.getElementsByTagName("form")[1].getElementsByClassName("nlink")[0].href; // First form is login banner - second form is application. Isolate the nation link and copy to clipboard. 
+				
+				//Safety net, since I can't test WA right now - make sure we have a second form to query.
+				if (window.location.href.includes("https://www.nationstates.net/page=join_WA?nation=") && document.getElementsByTagName("form").length > 1) { 
+					// First form is login banner - second form is application. Isolate the nation link and copy to clipboard. 
+					var NationURL = document.getElementsByTagName("form")[1].getElementsByClassName("nlink")[0].href; 
 				} else { 
 					var NationLink = document.getElementsByClassName("bellink quietlink");
 					var NationURL = NationLink[0].href;
@@ -92,18 +107,31 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				navigator.clipboard.writeText(NationURL);
 				break;
 			case 'KeyD': // appoint yourself as and/or deappoint ROs
-				var current_nation = document.getElementById("loggedin").getAttribute("data-nname");
+				// TODO: automatic round-robin RO dismissal options
+				// This should be done AFTER the automatic appointing
+
+//				var current_nation = document.getElementById("loggedin").getAttribute("data-nname");
+				var current_nation = document.body.dataset.nname;
+				
+				// Assume user is logged in, but in template=none mode following a refresh/relocation
+				// In this case, go to the region control panel anyway.
+				if (!current_nation) { 
+					window.location.assign("https://www.nationstates.net/page=region_control");
+				}
+				
 				// If on the regional control page, open own regional officer page
-				if (window.location.href == "https://www.nationstates.net/page=region_control") {
+				else if (window.location.href == "https://www.nationstates.net/page=region_control") {
 					window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + current_nation);
 				}
 				// If on on own regional officer page, assign officer role
 				else if (window.location.href == "https://www.nationstates.net/page=regional_officer/nation=" + current_nation) {
+					// TODO: This is where custom naming comes in
 					document.getElementsByName("office_name")[0].value = "Supreme Overlord";
 					document.getElementsByName("authority_A")[0].checked = true;
 					document.getElementsByName("authority_C")[0].checked = true;
 					document.getElementsByName("authority_E")[0].checked = true;
 					document.getElementsByName("authority_P")[0].checked = true;
+//					window.alert(document.getElementsByName("office_name")[0].value);
 					document.getElementsByName('editofficer')[0].click();
 				}
 				// If on someone else's regional officer page, dismiss them (or strip permissions if successor)

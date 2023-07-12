@@ -22,6 +22,10 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
+3.5.4
+Added refresh functionality to move key
+Fine-tuned functionality under the hood
+
 3.5.3
 Moved nation-update feed to G for ease of use mid-tag
 
