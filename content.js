@@ -117,11 +117,20 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				
 				// Assume user is logged in, but in template=none mode following a refresh/relocation
 				// In this case, go to the region control panel anyway.
+				//window.location.assign("https://www.nationstates.net/page=reports/view=self/filter=change/template-overall=none");
+
 				if (!current_nation) { 
-					window.location.assign("https://www.nationstates.net/page=region_control");
+					if (window.location.href.includes("/page=reports/view=self/filter=change/template-overall=none")) { 
+						// If on the dossier page, we can get our user from that
+						current_nation = document.getElementsByTagName("h1")[0].outerText.toLowerCase().replace(/ /gi,"_").split("'")[0];
+						window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + current_nation);
+					} else { 
+						window.location.assign("https://www.nationstates.net/page=region_control");
+					}
 				}
 				
 				// If on the regional control page, open own regional officer page
+				// TODO: Check if RO, then de-RO everyone else in rapid order until all is done
 				else if (window.location.href == "https://www.nationstates.net/page=region_control") {
 					window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + current_nation);
 				}
