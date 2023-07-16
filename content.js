@@ -49,6 +49,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				}
 				break;
 			case 'KeyF': // move to region whose page you're currently on
+				/*
 				// From Notaname
                 if (window.location.href.includes("region=")) {
                     if (document.getElementsByName('move_region').length == 0) window.location.reload();
@@ -57,13 +58,13 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
                     document.getElementsByClassName('rlink')[0].click();
                 }
                 break;
+				*/
 
-				/*
+				
 				if (window.location.href.includes("region=")) {
 					document.getElementsByName('move_region')[0].click();
 				}
 				break;
-				*/
 			case 'KeyB': // move to suspicious
 				if (window.location.href == "https://www.nationstates.net/region=suspicious") {
 					document.getElementsByName('move_region')[0].click();
@@ -85,7 +86,8 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				break;
 			case 'KeyZ': // go to current region page
 				// document.getElementById("panelregionbar").children[0].href 
-				if (window.location.href == "https://www.nationstates.net/page=change_region") { // if on post-relocation page
+				// Attempted bugfix
+				if (window.location.href.includes("/page=change_region")) { // if on post-relocation page
 					document.getElementsByClassName('info')[0].getElementsByClassName('rlink')[0].click(); // click the region link on the relocation page
 				} else { // otherwise just click the region link through the sidebar
 //					document.getElementById('panelregionbar').querySelector('a').click();
@@ -149,7 +151,9 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				}
 				// If on none of these pages, open regional control page
 				else {
-					window.location.assign("https://www.nationstates.net/page=region_control");
+					// Go directly to CURRENT RO page
+					window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + current_nation);
+					//window.location.assign("https://www.nationstates.net/page=region_control");
 				}
 				break;
 		} // end switch

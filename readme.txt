@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.5
+YAFFeather v3.5.6
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -22,6 +22,13 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
+3.5.6
+Made RO appoint in 2 keys, instead of 3
+Attempted minor bugfix with KeyZ to go to current region - will see if it works in the field
+
+3.5.5
+Rolled back changes to move key after user testing
+
 3.5.4
 Added refresh functionality to move key
 Fine-tuned functionality under the hood
