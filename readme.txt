@@ -22,6 +22,9 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
+3.5.8
+Made the UN page template=none by default, potentially accelerating switch speed
+
 3.5.7
 Added workaround for template=none with the self-doss page
 
