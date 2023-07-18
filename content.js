@@ -44,6 +44,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 			case 'KeyR': // confirm wa join
 				if (window.location.href.includes("page=join_WA")) {
 					var NationURL = document.getElementsByTagName("form")[1].getElementsByClassName("nlink")[0].href;
+//					var WA_accepted = NationURL; // Experimental prototype to preserve current_nation across pages
 					navigator.clipboard.writeText(NationURL);
 					document.getElementsByClassName('button primary icon approve big')[0].click();
 				}
@@ -59,7 +60,6 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
                 }
                 break;
 				*/
-
 				
 				if (window.location.href.includes("region=")) {
 					document.getElementsByName('move_region')[0].click();
@@ -73,15 +73,21 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				}
 				break;
 			case 'KeyE': // resign from WA, courtesy of NotAName
+				// https://www.nationstates.net/page=un/template-overall=none
 				if (window.location.href.includes("https://www.nationstates.net/page=un")) {
-					if (document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].textContent.includes("Apply to Join")) { 
+					// If we are in template=none, assume we are mid-switch, not prepping, and hit resign
+					if (!window.location.href.includes("template-overall=none") 
+					&& document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].textContent.includes("Apply to Join")) { 
+
 						document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].click() // Apply to join
 					} else {  // Nota's absolutely villainous, devious trick
 						var chk = document.getElementsByName('chk')[0].value;
-						window.location.assign(`https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`);
+						//window.location.assign(`https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`);
+						window.location.href = `https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`;
 					}
 				} else {
-					window.location.assign("https://www.nationstates.net/page=un");
+					//window.location.assign("https://www.nationstates.net/page=un");
+					window.location.href = "https://www.nationstates.net/page=un/template-overall=none";
 				}
 				break;
 			case 'KeyZ': // go to current region page
@@ -97,7 +103,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 			case 'KeyX': // Copy the current nation to the clipboard
 				// If we are looking at the WA application page, grab the link from the application we're looking at instead of our current nation
 				// I've had issues where I hit X too quickly and it gives me the puppet I just switched off of - this should fix that.
-				
+			
 				//Safety net, since I can't test WA right now - make sure we have a second form to query.
 				if (window.location.href.includes("https://www.nationstates.net/page=join_WA?nation=") && document.getElementsByTagName("form").length > 1) { 
 					// First form is login banner - second form is application. Isolate the nation link and copy to clipboard. 
