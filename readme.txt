@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.5.7
+YAFFeather v3.6.0
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -22,6 +22,12 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
+3.6.0
+Added round-robin RO dismissal after successful appointment
+
+3.5.9
+Re-enabled applying to WA
+
 3.5.8
 Made the UN page template=none by default, potentially accelerating switch speed
 

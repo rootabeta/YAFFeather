@@ -75,11 +75,23 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 			case 'KeyE': // resign from WA, courtesy of NotAName
 				// https://www.nationstates.net/page=un/template-overall=none
 				if (window.location.href.includes("https://www.nationstates.net/page=un")) {
-					// If we are in template=none, assume we are mid-switch, not prepping, and hit resign
+	
+					// Not template=none
+					// Button reads "Apply to Join"
 					if (!window.location.href.includes("template-overall=none") 
 					&& document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].textContent.includes("Apply to Join")) { 
 
 						document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].click() // Apply to join
+						 
+					// Template=none
+					// Button reads "Apply to Join"
+					} else if (window.location.href.includes("template-overall=none")
+						&& document.getElementsByTagName("form")[0].getElementsByTagName("button")[0].textContent.includes("Apply to Join")) { 
+
+						document.getElementsByTagName("form")[0].getElementsByTagName("button")[0].click() // Apply to join
+						
+					// If we are here, neither in nor out of template=none does the button read "Apply to Join"
+					// Ergo, we must RESIGN
 					} else {  // Nota's absolutely villainous, devious trick
 						var chk = document.getElementsByName('chk')[0].value;
 						//window.location.assign(`https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`);
@@ -115,16 +127,12 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				navigator.clipboard.writeText(NationURL);
 				break;
 			case 'KeyD': // appoint yourself as and/or deappoint ROs
-				// TODO: automatic round-robin RO dismissal options
-				// This should be done AFTER the automatic appointing
-
 //				var current_nation = document.getElementById("loggedin").getAttribute("data-nname");
 				var current_nation = document.body.dataset.nname;
 				
 				// Assume user is logged in, but in template=none mode following a refresh/relocation
 				// In this case, go to the region control panel anyway.
 				//window.location.assign("https://www.nationstates.net/page=reports/view=self/filter=change/template-overall=none");
-
 				if (!current_nation) { 
 					if (window.location.href.includes("/page=reports/view=self/filter=change/template-overall=none")) { 
 						// If on the dossier page, we can get our user from that
@@ -137,12 +145,61 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				
 				// If on the regional control page, open own regional officer page
 				// TODO: Check if RO, then de-RO everyone else in rapid order until all is done
-				else if (window.location.href == "https://www.nationstates.net/page=region_control") {
-					window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + current_nation);
+				else if (window.location.href.includes("https://www.nationstates.net/page=region_control")) {
+					// document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].children[0].children[0].href 
+					var encounteredSelf = false;
+					var other_ros = [];
+					// Skip first
+					for (i = 1; i < document.getElementById("rcontrol_officers").tBodies[0].rows.length ; i++) { 
+						// Valid RO length, analyze
+						if (document.getElementById("rcontrol_officers").tBodies[0].rows[i].children.length == 5) { 
+							// Found our own nation! 
+							if (document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)) { 
+								encounteredSelf = true;
+							}
+							// Not our own nation, nor govt/del, and we were not the one to appoint them (e.g. they have not yet been renamed, if successor)
+							else if (
+							    !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor") 
+							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
+							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[2].children[2].href.includes(current_nation)
+							) { 
+								other_ros.push(document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href);
+							}
+						}
+
+					}
+
+					// We ARE appointed! Clear to ruin other ROs
+					if(encounteredSelf) { 
+						console.log("Found self");
+						// Another RO exists that we can mess with! Rename/dismiss them
+						if (other_ros.length > 0) { 
+							console.log(`Dismissing ${other_ros[0]}`);
+							window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + other_ros[0]);
+						// No other ROs exist, let's rename the governor!
+						} else { 
+							console.log("Renaming governor");
+							window.location.assign("https://www.nationstates.net/page=regional_officer/office=governor");
+						}
+					} else { 
+						console.log("Missing self");
+						// Just in case
+						if (!current_nation) { 
+							current_nation = document.body.dataset.nname;
+						}
+						window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + current_nation);
+					}
+
+				}
+				// If on governor's page, rename 
+				else if (window.location.href.includes("office=governor")) { 
+					// TODO: Custom governor name
+					document.getElementsByName("office_name")[0].value = "Catgirl :3";
+					document.getElementsByName('editofficer')[0].click();
 				}
 				// If on on own regional officer page, assign officer role
 				else if (window.location.href == "https://www.nationstates.net/page=regional_officer/nation=" + current_nation) {
-					// TODO: This is where custom naming comes in
+					// TODO: Custom RO name
 					document.getElementsByName("office_name")[0].value = "Supreme Overlord";
 					document.getElementsByName("authority_A")[0].checked = true;
 					document.getElementsByName("authority_C")[0].checked = true;
@@ -153,7 +210,10 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				}
 				// If on someone else's regional officer page, dismiss them (or strip permissions if successor)
 				else if (window.location.href.includes("regional_officer")) {
-					if(document.getElementsByName("authority_S")[0].checked) { // If has succession authority, remove all other permissions, since successors cannot be removed by exec WA. Thanks Nota!
+					// If has succession authority, remove all other permissions, since successors cannot be removed by exec WA. Thanks Nota!
+					if(document.getElementsByName("authority_S")[0].checked) { 
+						// TODO: Custom successor name
+						document.getElementsByName("office_name")[0].value = "Nya~";
 						document.getElementsByName("authority_A")[0].checked = false;
 						document.getElementsByName("authority_B")[0].checked = false;
 						document.getElementsByName("authority_C")[0].checked = false;
