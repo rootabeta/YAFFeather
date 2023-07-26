@@ -247,7 +247,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					document.getElementsByName('editofficer')[0].click();
 				}
 				// If on on own regional officer page, assign officer role
-				else if (window.location.href == "https://www.nationstates.net/page=regional_officer/nation=" + current_nation) {
+				else if (window.location.href.includes(current_nation)) {
 					// TODO: Custom RO name
 					document.getElementsByName("office_name")[0].value = rotitle; // "Supreme Overlord";
 					document.getElementsByName("authority_A")[0].checked = true;
