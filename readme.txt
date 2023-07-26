@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.6.2
+YAFFeather v3.6.3
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -22,6 +22,9 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
+3.6.3
+Fixed a bug that caused dismissal to fail if the person who appointed one or more RO has since CTEd
+
 3.6.2
 Made it harder to accidentally dismiss yourself
 

@@ -193,7 +193,8 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 							// Us
 							// Not the Governor
 							// Not the Delegate
-							// If so, we are an RO
+							// If so, we are an RO, and can move to phase 2.
+							// If not, appointing ourselves is priority 1
 							if (
 								 document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)  
 							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor")
@@ -205,14 +206,17 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 							// Is the RO we're looking at
 							// Not the Governor
 							// Not the Delegate
-							// NOT us
-							// If so, it's someone other than us that we can dismiss or rename
+							// Not us
 							if (
 							    !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor") 
 							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
-							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[2].children[2].href.includes(current_nation)
+							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)  
 							) { 
-								other_ros.push(document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href);
+
+								// Better solution - Check for our nation inside of the appointment text
+								if (!document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[2].innerHTML.includes(current_nation)) {
+									other_ros.push(document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href);
+								}
 							}
 						}
 
