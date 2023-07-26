@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.6.5
+YAFFeather v3.6.6
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -22,6 +22,9 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
+3.6.6
+Updated YAFFeather to use a customized icon
+
 3.6.5
 Finalized default RO titles for successor and governor (Task Failed Successorly and Maintain A, respectively)
 Attempted minor streamlining to prevent race conditions
