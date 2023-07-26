@@ -1,7 +1,43 @@
+// Defaults in case the settings don't load fast enough
+let rotitle = "Supreme Overlord";
+let suctitle = "Nya~";
+let govtitle = "Catgirl :3";
+
+function loadSettings(settings) { 
+	console.log("Loaded settings");
+	rotitle = "Supreme Overlord";
+	suctitle = "Nya~";
+	govtitle = "Catgirl :3";
+	if (settings.ro) { 
+		rotitle = settings.ro
+	}
+
+	if (settings.gov) { 
+		govtitle = settings.gov
+	}
+
+	if (settings.gov) { 
+		suctitle = settings.suc
+	}
+}
+
+function settingsFailed(error) { 
+	console.error("YAFFeather: Failed to load settings");
+	console.error(error);
+
+	rotitle = "Supreme Overlord";
+	suctitle = "Nya~";
+	govtitle = "Catgirl :3";
+}
+
+const getting = browser.storage.sync.get();
+getting.then(loadSettings, settingsFailed);
+
 document.addEventListener('keyup', function (event) { // keyup may seem less intuitive but it's already the standard in breeze-like scripts and it prevents holding down a key spamming the server
 	if (event.shiftKey || event.ctrlKey || event.altKey || document.activeElement.tagName == 'INPUT' || document.activeElement.tagName == 'TEXTAREA') { // locks you out of the script while you're holding down a modifier key or typing in an input
 		return;
 	} else {
+		// Wait a second, this is inside an event listener... this is async already! We can just await it!
 		switch (event.code) { // event.code is the key that was pressed
 			case 'KeyA': // reload page
 				window.location.reload();
@@ -151,14 +187,27 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					var other_ros = [];
 					// Skip first
 					for (i = 1; i < document.getElementById("rcontrol_officers").tBodies[0].rows.length ; i++) { 
-						// Valid RO length, analyze
+						// Check if we are an RO, and build up a list of all non-us ROs who are not the delegate or governor
 						if (document.getElementById("rcontrol_officers").tBodies[0].rows[i].children.length == 5) { 
-							// Found our own nation! 
-							if (document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)) { 
+							// Is the RO we're looking at
+							// Us
+							// Not the Governor
+							// Not the Delegate
+							// If so, we are an RO
+							if (
+								 document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)  
+							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor")
+							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
+							) { 
 								encounteredSelf = true;
 							}
-							// Not our own nation, nor govt/del, and we were not the one to appoint them (e.g. they have not yet been renamed, if successor)
-							else if (
+
+							// Is the RO we're looking at
+							// Not the Governor
+							// Not the Delegate
+							// NOT us
+							// If so, it's someone other than us that we can dismiss or rename
+							if (
 							    !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor") 
 							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
 							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[2].children[2].href.includes(current_nation)
@@ -194,13 +243,13 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				// If on governor's page, rename 
 				else if (window.location.href.includes("office=governor")) { 
 					// TODO: Custom governor name
-					document.getElementsByName("office_name")[0].value = "Catgirl :3";
+					document.getElementsByName("office_name")[0].value = govtitle; //"Catgirl :3";
 					document.getElementsByName('editofficer')[0].click();
 				}
 				// If on on own regional officer page, assign officer role
 				else if (window.location.href == "https://www.nationstates.net/page=regional_officer/nation=" + current_nation) {
 					// TODO: Custom RO name
-					document.getElementsByName("office_name")[0].value = "Supreme Overlord";
+					document.getElementsByName("office_name")[0].value = rotitle; // "Supreme Overlord";
 					document.getElementsByName("authority_A")[0].checked = true;
 					document.getElementsByName("authority_C")[0].checked = true;
 					document.getElementsByName("authority_E")[0].checked = true;
@@ -213,7 +262,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					// If has succession authority, remove all other permissions, since successors cannot be removed by exec WA. Thanks Nota!
 					if(document.getElementsByName("authority_S")[0].checked) { 
 						// TODO: Custom successor name
-						document.getElementsByName("office_name")[0].value = "Nya~";
+						document.getElementsByName("office_name")[0].value = suctitle; // "Nya~";
 						document.getElementsByName("authority_A")[0].checked = false;
 						document.getElementsByName("authority_B")[0].checked = false;
 						document.getElementsByName("authority_C")[0].checked = false;

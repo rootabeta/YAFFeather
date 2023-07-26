@@ -1,43 +1,22 @@
 function saveOptions(e) {
   e.preventDefault();
 
-  ros = document.querySelector("#ros").value.split(',');
-  //Default
-  if(ros.length == 0 || ros[0] == "") { 
-    ros = ["Supreme Overlord"]
-  }
-
-  randcase = document.querySelector("#randcase").checked;
-  randbefore = document.querySelector("#randbefore").checked;
-  randafter = document.querySelector("#randafter").checked;
-  randspace = document.querySelector("#randspace").checked;
-  randro = document.querySelector("#randro").checked;
-
-//  window.alert(ros);
-//  window.alert(randro);
-
-  browser.storage.sync.set({
-	  "ros":ros,
-	  "randcase":randcase,
-	  "randbefore":randbefore,
-	  "randafter":randafter,
-	  "randspace":randspace,
-	  "randro":randro
+  browser.storage.sync.set({ 
+  	ro: document.querySelector("#ro").value,
+  	gov: document.querySelector("#gov").value,
+  	suc: document.querySelector("#suc").value,
   });
 }
 
 function restoreOptions() {
   function setCurrentChoice(result) {
-    document.querySelector("#ros").value = result.ros;
-	document.querySelector("#randcase").checked = result.randcase;
-	document.querySelector("#randbefore").checked = result.randbefore;
-	document.querySelector("#randafter").checked = result.randafter;
-	document.querySelector("#randspace").checked = result.randspace;
-	document.querySelector("#randro").checked = result.randro;
+	document.querySelector("#ro").value = result.ro || "Supreme Overlord";
+	document.querySelector("#gov").value = result.gov || "Catgirl :3";
+	document.querySelector("#suc").value = result.suc || "Nya~";
   }
 
   function onError(error) {
-    console.log(`Error: ${error}`);
+	console.error(`Oh nyo: ${error}`);
   }
 
   let getting = browser.storage.sync.get();
