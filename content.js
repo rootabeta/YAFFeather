@@ -211,7 +211,8 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 							// Not the Governor
 							// Not the Delegate
 							// Not us
-							if (
+							// We can skip evaluating it entirely if it's our own RO, of course. Why not save a CPU cycle?
+							else if (
 							    !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor") 
 							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
 							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)  
