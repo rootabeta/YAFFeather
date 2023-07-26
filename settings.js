@@ -11,8 +11,8 @@ function saveOptions(e) {
 function restoreOptions() {
   function setCurrentChoice(result) {
 	document.querySelector("#ro").value = result.ro || "Supreme Overlord";
-	document.querySelector("#gov").value = result.gov || "Catgirl :3";
-	document.querySelector("#suc").value = result.suc || "Nya~";
+	document.querySelector("#gov").value = result.gov || "Maintain A";
+	document.querySelector("#suc").value = result.suc || "Task Failed Successorly";
   }
 
   function onError(error) {

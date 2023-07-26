@@ -1,13 +1,17 @@
 // Defaults in case the settings don't load fast enough
+// This is especially important for fast switchers
+// I *could* solve this with an await, but that introduces unpredictable lag
+// Since the only people who will run into these are the fast switchers, 
+// That lag is unacceptable. Better to run the risk of a race condition.
 let rotitle = "Supreme Overlord";
-let suctitle = "Nya~";
-let govtitle = "Catgirl :3";
+let suctitle = "Task Failed Successorly";
+let govtitle = "Maintain A";
 
 function loadSettings(settings) { 
 	console.log("Loaded settings");
-	rotitle = "Supreme Overlord";
-	suctitle = "Nya~";
-	govtitle = "Catgirl :3";
+	rotitle = rotitle || "Supreme Overlord";
+	suctitle = suctitle || "Task Failed Successorly";
+	govtitle = govtitle || "Maintain A";
 	if (settings.ro) { 
 		rotitle = settings.ro
 	}
