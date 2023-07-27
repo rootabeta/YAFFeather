@@ -29,9 +29,9 @@ function settingsFailed(error) {
 	console.error("YAFFeather: Failed to load settings");
 	console.error(error);
 
-	rotitle = "Supreme Overlord";
-	suctitle = "Nya~";
-	govtitle = "Catgirl :3";
+	rotitle = rotitle || "Supreme Overlord";
+	suctitle = suctitle || "Task Failed Successorly";
+	govtitle = govtitle || "Maintain A";
 }
 
 const getting = browser.storage.sync.get();

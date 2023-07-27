@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.6.6
+YAFFeather v3.6.6-chrome
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
