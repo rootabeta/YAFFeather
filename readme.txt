@@ -22,7 +22,10 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
-3.6.6.1 (Beta)
+3.6.6.2
+Added error handling during RO process
+
+3.6.6.1
 Updated icons for YAFFeather Beta
 
 3.6.5

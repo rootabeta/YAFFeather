@@ -29,9 +29,10 @@ function settingsFailed(error) {
 	console.error("YAFFeather: Failed to load settings");
 	console.error(error);
 
-	rotitle = "Supreme Overlord";
-	suctitle = "Nya~";
-	govtitle = "Catgirl :3";
+	// Assume failed condition
+	let rotitle = "Supreme Overlord";
+	let suctitle = "Task Failed Successorly";
+	let govtitle = "Maintain A";
 }
 
 const getting = browser.storage.sync.get();
@@ -190,42 +191,49 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					var encounteredSelf = false;
 					var other_ros = [];
 					// Skip first
-					for (i = 1; i < document.getElementById("rcontrol_officers").tBodies[0].rows.length ; i++) { 
-						// Check if we are an RO, and build up a list of all non-us ROs who are not the delegate or governor
-						if (document.getElementById("rcontrol_officers").tBodies[0].rows[i].children.length == 5) { 
-							// Is the RO we're looking at
-							// Us
-							// Not the Governor
-							// Not the Delegate
-							// If so, we are an RO, and can move to phase 2.
-							// If not, appointing ourselves is priority 1
-							if (
-								 document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)  
-							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor")
-							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
-							) { 
-								encounteredSelf = true;
-							}
+					try { 
+						for (i = 1; i < document.getElementById("rcontrol_officers").tBodies[0].rows.length ; i++) { 
+							// Check if we are an RO, and build up a list of all non-us ROs who are not the delegate or governor
+							if (document.getElementById("rcontrol_officers").tBodies[0].rows[i].children.length == 5) { 
+								// Is the RO we're looking at
+								// Us
+								// Not the Governor
+								// Not the Delegate
+								// If so, we are an RO, and can move to phase 2.
+								// If not, appointing ourselves is priority 1
+								if (
+									 document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)  
+								 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor")
+								 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
+								) { 
+									encounteredSelf = true;
+								}
 
-							// Is the RO we're looking at
-							// Not the Governor
-							// Not the Delegate
-							// Not us
-							// We can skip evaluating it entirely if it's our own RO, of course. Why not save a CPU cycle?
-							else if (
-							    !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor") 
-							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
-							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)  
-							) { 
+								// Is the RO we're looking at
+								// Not the Governor
+								// Not the Delegate
+								// Not us
+								// We can skip evaluating it entirely if it's our own RO, of course. Why not save a CPU cycle?
+								else if (
+									!document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor") 
+								 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
+								 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)  
+								) { 
 
-								// Better solution - Check for our nation inside of the appointment text
-								if (!document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[2].innerHTML.includes(current_nation)) {
-									other_ros.push(document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href);
+									// Better solution - Check for our nation inside of the appointment text
+									if (!document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[2].innerHTML.includes(current_nation)) {
+										other_ros.push(document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href);
+									}
 								}
 							}
 						}
-
-					}
+					} catch (error) { 
+						// Do not abort and go to self - if we have already picked ourself up, so much the better. 
+						// Technically, you can use finally to guarantee a result in the event this fails, but all we're doing here
+						// is logging to console. So we can skip a finally and just move along.
+						console.error('Caught error during RO scan'); 
+						console.error(error);
+					} 
 
 					// We ARE appointed! Clear to ruin other ROs
 					if(encounteredSelf) { 
