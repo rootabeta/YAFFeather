@@ -22,22 +22,6 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
-FAQ: 
-
-Q: What is YAFFeather?
-A: YAFFeather is a keybind script for NationStates R/D gameplay, based off the original Feather source code. 
-
-Q: What does YAF stand for? 
-A: Yet Another Fork (of)
-
-Q: Is YAFFeather getting a Chrome version? 
-A: No. The Chromans have had it too good for too long. Also, the Chrome Web Store is a NIGHTMARE to publish extensions to, and changing YAFFeather to use Manifest v3 breaks... *so many things* that I can't be bothered to fix for the 5 people in the world who can't be bothered to sideload an extension. 
-Download the release you want, Google "[your browser of choice] load unpacked extension", and follow the instructions if you want to use it on something other than Firefox. 
-
-Q: Is YAFFeather getting custom keybinds? 
-A: Probably not. This is because having me add infrastructure to add custom keybinds would be an incredible amount of work, while having the end user sideload it and edit them manually is much less. Remember, YAFFeather is a personal project - while I try to incorporate user feedback, at the end of the day it's my way or the highway. 
-
-===============================
 CHANGELOG:
 
 3.6.6
