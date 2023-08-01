@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.6.6.1
+YAFFeather v3.6.6.3
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -9,7 +9,7 @@ KEY LIST:
 A - Refresh page
 T - Set template-overall=none for faster pageloads
 Q - Go back
-G - Check if your nation updated
+V - Check if your nation updated
 S - Endorse nation
 L - Unendorse nation
 O - Ban nation
@@ -22,6 +22,9 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
+3.6.6.3
+Remapped self-check from G to V
+
 3.6.6.2
 Added error handling during RO process
 
