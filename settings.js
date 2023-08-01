@@ -1,7 +1,7 @@
 function saveOptions(e) {
   e.preventDefault();
 
-  browser.storage.sync.set({ 
+  chrome.storage.sync.set({ 
   	ro: document.querySelector("#ro").value,
   	gov: document.querySelector("#gov").value,
   	suc: document.querySelector("#suc").value,
@@ -19,7 +19,7 @@ function restoreOptions() {
 	console.error(`Oh nyo: ${error}`);
   }
 
-  let getting = browser.storage.sync.get();
+  let getting = chrome.storage.sync.get();
   getting.then(setCurrentChoice, onError);
 
 }

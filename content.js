@@ -34,7 +34,7 @@ function settingsFailed(error) {
 	govtitle = govtitle || "Maintain A";
 }
 
-const getting = browser.storage.sync.get();
+const getting = chrome.storage.sync.get();
 getting.then(loadSettings, settingsFailed);
 
 document.addEventListener('keyup', function (event) { // keyup may seem less intuitive but it's already the standard in breeze-like scripts and it prevents holding down a key spamming the server
