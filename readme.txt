@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.6.7-chrome
+YAFFeather v3.6.7.1-chrome
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -23,6 +23,9 @@ X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
 CHANGELOG:
+3.6.7.1 
+Fixed easyresign because Chrome is paranoid :c
+
 3.6.7
 /!\ Fixed potential simuntaneity issue in resignations
 Started using Beta editions to test non-critical changes

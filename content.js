@@ -174,19 +174,24 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 						// Enforce simultaneity for all buttons on this page
 						// Granted, there's only like, one, but this is a good backup
 						// When the button is pressed, disable all buttons on the page before launch
-						button.onclick = function() { 
-							let buttons = document.getElementsByTagName("button");
-							for (let i=0;i<buttons.length;i++) { 
-								buttons[i].disabled = true; 
-							}
-						}
+//						button.onclick = function() { 
+//							let buttons = document.getElementsByTagName("button");
+//							for (let i=0;i<buttons.length;i++) { 
+//								buttons[i].disabled = true; 
+//							}
+//						}
+//
+//						button.click(); 
 
-						button.click(); 
-
-						/* buttons = document.getElementsByTagName("button");
+						submissionForm = button.parentElement.parentElement;
+						let buttons = document.getElementsByTagName("button");
 						for (let i=0;i<buttons.length;i++) { 
 							buttons[i].disabled = true; 
-						}*/
+						}
+						submissionForm.requestSubmit();
+						//Block subsequent attempts
+						submissionForm.method = "";
+						submissionForm.action = "";
 
 						//Some of the mad scientists at TBH review HQ figure this is a bit of a head-scratcher and should be reworked. So I did. 
 						//Rework above.
