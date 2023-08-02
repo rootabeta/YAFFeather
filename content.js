@@ -158,7 +158,6 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					// If we are here, neither in nor out of template=none does the button read "Apply to Join"
 					// Ergo, we must RESIGN
 					} else { 
-						
 						// Not template=none, and we can resign
 						if (!window.location.href.includes("template-overall=none")
 							&& document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].textContent.includes("Resign")) { 
@@ -169,38 +168,15 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 						else if (document.getElementsByTagName("form")[0].getElementsByTagName("button")[0].textContent.includes("Resign")) { 
 							button = document.getElementsByTagName("form")[0].getElementsByTagName("button")[0];
 						}
-//						console.log(button);
 
-						// Enforce simultaneity for all buttons on this page
-						// Granted, there's only like, one, but this is a good backup
-						// When the button is pressed, disable all buttons on the page before launch
-//						button.onclick = function() { 
-//							let buttons = document.getElementsByTagName("button");
-//							for (let i=0;i<buttons.length;i++) { 
-//								buttons[i].disabled = true; 
-//							}
-//						}
-//
-//						button.click(); 
-
-						// Submit the unmodded form
-						submissionForm = button.parentElement.parentElement;
-						submissionForm.requestSubmit();
-
-						// Wreck it for all future attempts
-						submissionForm.method = "";
-						submissionForm.action = "";
-						let buttons = document.getElementsByTagName("button");
-						for (let i=0;i<buttons.length;i++) { 
-							buttons[i].disabled = true; 
-						}
-
-						//Some of the mad scientists at TBH review HQ figure this is a bit of a head-scratcher and should be reworked. So I did. 
-						//Rework above.
-						//TODO: One-click resignation? Pros and cons? Consider exposing the choice to the end user via settings (we can do that now!)
-//						var chk = document.getElementsByName('chk')[0].value;
-						//window.location.assign(`https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`);
-//						window.location.href = `https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`;
+						// We've identified the resignation button - now we grab the form that it's part of
+						// That form, when submitted, contains the info the site needs to resign. 
+						// Form is unmodified and thus does not need to adhere to simultaneity
+						let submissionForm = button.parentElement.parentElement;
+						submissionForm.requestSubmit(); // Make the resignation request using the OG form
+						
+						// Prevent duplicates by removing the means of execution. 
+						submissionForm.remove();
 					}
 				} else {
 					//window.location.assign("https://www.nationstates.net/page=un");
