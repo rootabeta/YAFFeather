@@ -3,25 +3,44 @@
 // I *could* solve this with an await, but that introduces unpredictable lag
 // Since the only people who will run into these are the fast switchers, 
 // That lag is unacceptable. Better to run the risk of a race condition.
-let rotitle = "Supreme Overlord";
-let suctitle = "Task Failed Successorly";
-let govtitle = "Maintain A";
+
+// let rotitle = "Supreme Overlord";
+// let suctitle = "Task Failed Successorly";
+// let govtitle = "Maintain A";
+
+// Reworked solution using localStorage to persist settings across pageloads
+// If no title is set yet, use the defaults as a stopgap
+// Otherwise, use the one we last set
+
+let rotitle = localStorage.getItem("yfrotitle") || "Supreme Overlord";
+let suctitle = localStorage.getItem("yfsuctitle") || "Task Failed Successorly";
+let govtitle = localStorage.getItem("yfgovtitle") || "Maintain A";
+
 
 function loadSettings(settings) { 
+	//Whenever this function fires, we know that we have new data from settings
+	//This means we can discard whatever we had, and update to the new stuff
+	//This way, we can change things and have it reflected on the next refresh
+
 	console.log("Loaded settings");
-	rotitle = rotitle || "Supreme Overlord";
-	suctitle = suctitle || "Task Failed Successorly";
-	govtitle = govtitle || "Maintain A";
+
+//	rotitle = rotitle || "Supreme Overlord";
+//	suctitle = suctitle || "Task Failed Successorly";
+//	govtitle = govtitle || "Maintain A";
+
 	if (settings.ro) { 
-		rotitle = settings.ro
+		rotitle = settings.ro;
+		localStorage.setItem("yfrotitle",settings.ro);
 	}
 
 	if (settings.gov) { 
-		govtitle = settings.gov
+		govtitle = settings.gov;
+		localStorage.setItem("yfgovtitle",settings.gov);
 	}
 
-	if (settings.gov) { 
-		suctitle = settings.suc
+	if (settings.suc) { 
+		suctitle = settings.suc;
+		localStorage.setItem("yfsuctitle",settings.suc);
 	}
 }
 
@@ -29,9 +48,15 @@ function settingsFailed(error) {
 	console.error("YAFFeather: Failed to load settings");
 	console.error(error);
 
-	rotitle = rotitle || "Supreme Overlord";
-	suctitle = suctitle || "Task Failed Successorly";
-	govtitle = govtitle || "Maintain A";
+	// Assume failed condition
+	// If we already have a good value, use that. Otherwise, use defaults.
+	let rotitle = localStorage.getItem("yfrotitle") || "Supreme Overlord";
+	let suctitle = localStorage.getItem("yfsuctitle") || "Task Failed Successorly";
+	let govtitle = localStorage.getItem("yfgovtitle") || "Maintain A";
+
+	//let rotitle = "Supreme Overlord";
+	//let suctitle = "Task Failed Successorly";
+	//let govtitle = "Maintain A";
 }
 
 const getting = chrome.storage.sync.get();
@@ -56,7 +81,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 			case 'KeyQ': // go back
 				window.history.back();
 				break;
-			case 'KeyG': // check if you updated
+			case 'KeyV': // check if you updated
 				window.location.assign("https://www.nationstates.net/page=reports/view=self/filter=change/template-overall=none");
 				break;
 			case 'KeyS': // endorse nation - NOT toggle endorsement! Together with my tampermonkey DidIEndo.js script, this should make endo confusion a thing of the past.
@@ -121,21 +146,54 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					if (!window.location.href.includes("template-overall=none") 
 					&& document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].textContent.includes("Apply to Join")) { 
 
-						document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].click() // Apply to join
+						document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].click(); // Apply to join
 						 
 					// Template=none
 					// Button reads "Apply to Join"
 					} else if (window.location.href.includes("template-overall=none")
 						&& document.getElementsByTagName("form")[0].getElementsByTagName("button")[0].textContent.includes("Apply to Join")) { 
 
-						document.getElementsByTagName("form")[0].getElementsByTagName("button")[0].click() // Apply to join
+						document.getElementsByTagName("form")[0].getElementsByTagName("button")[0].click(); // Apply to join
 						
 					// If we are here, neither in nor out of template=none does the button read "Apply to Join"
 					// Ergo, we must RESIGN
-					} else {  // Nota's absolutely villainous, devious trick
-						var chk = document.getElementsByName('chk')[0].value;
+					} else { 
+						
+						// Not template=none, and we can resign
+						if (!window.location.href.includes("template-overall=none")
+							&& document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].textContent.includes("Resign")) { 
+							button = document.getElementsByTagName("form")[1].getElementsByTagName("button")[0];
+						}
+
+						// Check template=none, if we're here we're not here to apply
+						else if (document.getElementsByTagName("form")[0].getElementsByTagName("button")[0].textContent.includes("Resign")) { 
+							button = document.getElementsByTagName("form")[0].getElementsByTagName("button")[0];
+						}
+//						console.log(button);
+
+						// Enforce simultaneity for all buttons on this page
+						// Granted, there's only like, one, but this is a good backup
+						// When the button is pressed, disable all buttons on the page before launch
+						button.onclick = function() { 
+							let buttons = document.getElementsByTagName("button");
+							for (let i=0;i<buttons.length;i++) { 
+								buttons[i].disabled = true; 
+							}
+						}
+
+						button.click(); 
+
+						/* buttons = document.getElementsByTagName("button");
+						for (let i=0;i<buttons.length;i++) { 
+							buttons[i].disabled = true; 
+						}*/
+
+						//Some of the mad scientists at TBH review HQ figure this is a bit of a head-scratcher and should be reworked. So I did. 
+						//Rework above.
+						//TODO: One-click resignation? Pros and cons? Consider exposing the choice to the end user via settings (we can do that now!)
+//						var chk = document.getElementsByName('chk')[0].value;
 						//window.location.assign(`https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`);
-						window.location.href = `https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`;
+//						window.location.href = `https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`;
 					}
 				} else {
 					//window.location.assign("https://www.nationstates.net/page=un");
@@ -146,7 +204,8 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				// document.getElementById("panelregionbar").children[0].href 
 				// Attempted bugfix
 				if (window.location.href.includes("/page=change_region")) { // if on post-relocation page
-					document.getElementsByClassName('info')[0].getElementsByClassName('rlink')[0].click(); // click the region link on the relocation page
+					window.location.href = document.getElementsByClassName('info')[0].getElementsByClassName('rlink')[0].href; // click the region link on the relocation page
+					//document.getElementsByClassName('info')[0].getElementsByClassName('rlink')[0].click(); // click the region link on the relocation page
 				} else { // otherwise just click the region link through the sidebar
 //					document.getElementById('panelregionbar').querySelector('a').click();
 					window.location.href = document.getElementById("panelregionbar").children[0].href 
@@ -190,41 +249,49 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					var encounteredSelf = false;
 					var other_ros = [];
 					// Skip first
-					for (i = 1; i < document.getElementById("rcontrol_officers").tBodies[0].rows.length ; i++) { 
-						// Check if we are an RO, and build up a list of all non-us ROs who are not the delegate or governor
-						if (document.getElementById("rcontrol_officers").tBodies[0].rows[i].children.length == 5) { 
-							// Is the RO we're looking at
-							// Us
-							// Not the Governor
-							// Not the Delegate
-							// If so, we are an RO, and can move to phase 2.
-							// If not, appointing ourselves is priority 1
-							if (
-								 document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)  
-							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor")
-							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
-							) { 
-								encounteredSelf = true;
-							}
+					try { 
+						for (i = 1; i < document.getElementById("rcontrol_officers").tBodies[0].rows.length ; i++) { 
+							// Check if we are an RO, and build up a list of all non-us ROs who are not the delegate or governor
+							if (document.getElementById("rcontrol_officers").tBodies[0].rows[i].children.length == 5) { 
+								// Is the RO we're looking at
+								// Us
+								// Not the Governor
+								// Not the Delegate
+								// If so, we are an RO, and can move to phase 2.
+								// If not, appointing ourselves is priority 1
+								if (
+									 document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)  
+								 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor")
+								 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
+								) { 
+									encounteredSelf = true;
+								}
 
-							// Is the RO we're looking at
-							// Not the Governor
-							// Not the Delegate
-							// Not us
-							if (
-							    !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor") 
-							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
-							 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)  
-							) { 
+								// Is the RO we're looking at
+								// Not the Governor
+								// Not the Delegate
+								// Not us
+								// We can skip evaluating it entirely if it's our own RO, of course. Why not save a CPU cycle?
+								else if (
+									!document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=governor") 
+								 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes("office=delegate")
+								 && !document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href.includes(current_nation)  
+								) { 
 
-								// Better solution - Check for our nation inside of the appointment text
-								if (!document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[2].innerHTML.includes(current_nation)) {
-									other_ros.push(document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href);
+									// Better solution - Check for our nation inside of the appointment text
+									if (!document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[2].innerHTML.includes(current_nation)) {
+										other_ros.push(document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].firstChild.firstChild.href);
+									}
 								}
 							}
 						}
-
-					}
+					} catch (error) { 
+						// Do not abort and go to self - if we have already picked ourself up, so much the better. 
+						// Technically, you can use finally to guarantee a result in the event this fails, but all we're doing here
+						// is logging to console. So we can skip a finally and just move along.
+						console.error('Caught error during RO scan'); 
+						console.error(error);
+					} 
 
 					// We ARE appointed! Clear to ruin other ROs
 					if(encounteredSelf) { 
@@ -232,7 +299,8 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 						// Another RO exists that we can mess with! Rename/dismiss them
 						if (other_ros.length > 0) { 
 							console.log(`Dismissing ${other_ros[0]}`);
-							window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + other_ros[0]);
+							window.location = other_ros[0];
+							//window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + other_ros[0]);
 						// No other ROs exist, let's rename the governor!
 						} else { 
 							console.log("Renaming governor");

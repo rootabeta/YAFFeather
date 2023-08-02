@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.6.6-chrome
+YAFFeather v3.6.7-chrome
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -9,7 +9,7 @@ KEY LIST:
 A - Refresh page
 T - Set template-overall=none for faster pageloads
 Q - Go back
-G - Check if your nation updated
+V - Check if your nation updated
 S - Endorse nation
 L - Unendorse nation
 O - Ban nation
@@ -23,6 +23,12 @@ X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
 CHANGELOG:
+3.6.7
+/!\ Fixed potential simuntaneity issue in resignations
+Started using Beta editions to test non-critical changes
+Changed reports key from G to V following user request
+Enhanced error handling
+Bugfixes
 
 3.6.6
 Updated YAFFeather to use a customized icon
