@@ -16,6 +16,7 @@ let rotitle = localStorage.getItem("yfrotitle") || "Supreme Overlord";
 let suctitle = localStorage.getItem("yfsuctitle") || "Task Failed Successorly";
 let govtitle = localStorage.getItem("yfgovtitle") || "Maintain A";
 
+
 function loadSettings(settings) { 
 	//Whenever this function fires, we know that we have new data from settings
 	//This means we can discard whatever we had, and update to the new stuff
@@ -145,22 +146,54 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					if (!window.location.href.includes("template-overall=none") 
 					&& document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].textContent.includes("Apply to Join")) { 
 
-						document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].click() // Apply to join
+						document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].click(); // Apply to join
 						 
 					// Template=none
 					// Button reads "Apply to Join"
 					} else if (window.location.href.includes("template-overall=none")
 						&& document.getElementsByTagName("form")[0].getElementsByTagName("button")[0].textContent.includes("Apply to Join")) { 
 
-						document.getElementsByTagName("form")[0].getElementsByTagName("button")[0].click() // Apply to join
+						document.getElementsByTagName("form")[0].getElementsByTagName("button")[0].click(); // Apply to join
 						
 					// If we are here, neither in nor out of template=none does the button read "Apply to Join"
 					// Ergo, we must RESIGN
-					} else {  // Nota's absolutely villainous, devious trick
+					} else { 
+						
+						// Not template=none, and we can resign
+						if (!window.location.href.includes("template-overall=none")
+							&& document.getElementsByTagName("form")[1].getElementsByTagName("button")[0].textContent.includes("Resign")) { 
+							button = document.getElementsByTagName("form")[1].getElementsByTagName("button")[0];
+						}
+
+						// Check template=none, if we're here we're not here to apply
+						else if (document.getElementsByTagName("form")[0].getElementsByTagName("button")[0].textContent.includes("Resign")) { 
+							button = document.getElementsByTagName("form")[0].getElementsByTagName("button")[0];
+						}
+//						console.log(button);
+
+						// Enforce simultaneity for all buttons on this page
+						// Granted, there's only like, one, but this is a good backup
+						// When the button is pressed, disable all buttons on the page before launch
+						button.onclick = function() { 
+							let buttons = document.getElementsByTagName("button");
+							for (let i=0;i<buttons.length;i++) { 
+								buttons[i].disabled = true; 
+							}
+						}
+
+						button.click(); 
+
+						/* buttons = document.getElementsByTagName("button");
+						for (let i=0;i<buttons.length;i++) { 
+							buttons[i].disabled = true; 
+						}*/
+
+						//Some of the mad scientists at TBH review HQ figure this is a bit of a head-scratcher and should be reworked. So I did. 
+						//Rework above.
 						//TODO: One-click resignation? Pros and cons? Consider exposing the choice to the end user via settings (we can do that now!)
-						var chk = document.getElementsByName('chk')[0].value;
+//						var chk = document.getElementsByName('chk')[0].value;
 						//window.location.assign(`https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`);
-						window.location.href = `https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`;
+//						window.location.href = `https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`;
 					}
 				} else {
 					//window.location.assign("https://www.nationstates.net/page=un");
