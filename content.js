@@ -3,25 +3,43 @@
 // I *could* solve this with an await, but that introduces unpredictable lag
 // Since the only people who will run into these are the fast switchers, 
 // That lag is unacceptable. Better to run the risk of a race condition.
-let rotitle = "Supreme Overlord";
-let suctitle = "Task Failed Successorly";
-let govtitle = "Maintain A";
+
+// let rotitle = "Supreme Overlord";
+// let suctitle = "Task Failed Successorly";
+// let govtitle = "Maintain A";
+
+// Reworked solution using localStorage to persist settings across pageloads
+// If no title is set yet, use the defaults as a stopgap
+// Otherwise, use the one we last set
+
+let rotitle = localStorage.getItem("yfrotitle") || "Supreme Overlord";
+let suctitle = localStorage.getItem("yfsuctitle") || "Task Failed Successorly";
+let govtitle = localStorage.getItem("yfgovtitle") || "Maintain A";
 
 function loadSettings(settings) { 
+	//Whenever this function fires, we know that we have new data from settings
+	//This means we can discard whatever we had, and update to the new stuff
+	//This way, we can change things and have it reflected on the next refresh
+
 	console.log("Loaded settings");
-	rotitle = rotitle || "Supreme Overlord";
-	suctitle = suctitle || "Task Failed Successorly";
-	govtitle = govtitle || "Maintain A";
+
+//	rotitle = rotitle || "Supreme Overlord";
+//	suctitle = suctitle || "Task Failed Successorly";
+//	govtitle = govtitle || "Maintain A";
+
 	if (settings.ro) { 
-		rotitle = settings.ro
+		rotitle = settings.ro;
+		localStorage.setItem("yfrotitle",settings.ro);
 	}
 
 	if (settings.gov) { 
-		govtitle = settings.gov
+		govtitle = settings.gov;
+		localStorage.setItem("yfgovtitle",settings.gov);
 	}
 
-	if (settings.gov) { 
-		suctitle = settings.suc
+	if (settings.suc) { 
+		suctitle = settings.suc;
+		localStorage.setItem("yfsuctitle",settings.suc);
 	}
 }
 
@@ -30,9 +48,14 @@ function settingsFailed(error) {
 	console.error(error);
 
 	// Assume failed condition
-	let rotitle = "Supreme Overlord";
-	let suctitle = "Task Failed Successorly";
-	let govtitle = "Maintain A";
+	// If we already have a good value, use that. Otherwise, use defaults.
+	let rotitle = localStorage.getItem("yfrotitle") || "Supreme Overlord";
+	let suctitle = localStorage.getItem("yfsuctitle") || "Task Failed Successorly";
+	let govtitle = localStorage.getItem("yfgovtitle") || "Maintain A";
+
+	//let rotitle = "Supreme Overlord";
+	//let suctitle = "Task Failed Successorly";
+	//let govtitle = "Maintain A";
 }
 
 const getting = browser.storage.sync.get();
@@ -134,6 +157,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					// If we are here, neither in nor out of template=none does the button read "Apply to Join"
 					// Ergo, we must RESIGN
 					} else {  // Nota's absolutely villainous, devious trick
+						//TODO: One-click resignation? Pros and cons? Consider exposing the choice to the end user via settings (we can do that now!)
 						var chk = document.getElementsByName('chk')[0].value;
 						//window.location.assign(`https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`);
 						window.location.href = `https://www.nationstates.net/page=UN_status?action=leave_un&submit=1&chk=${chk}`;
@@ -147,7 +171,8 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				// document.getElementById("panelregionbar").children[0].href 
 				// Attempted bugfix
 				if (window.location.href.includes("/page=change_region")) { // if on post-relocation page
-					document.getElementsByClassName('info')[0].getElementsByClassName('rlink')[0].click(); // click the region link on the relocation page
+					window.location.href = document.getElementsByClassName('info')[0].getElementsByClassName('rlink')[0].href; // click the region link on the relocation page
+					//document.getElementsByClassName('info')[0].getElementsByClassName('rlink')[0].click(); // click the region link on the relocation page
 				} else { // otherwise just click the region link through the sidebar
 //					document.getElementById('panelregionbar').querySelector('a').click();
 					window.location.href = document.getElementById("panelregionbar").children[0].href 
@@ -241,7 +266,8 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 						// Another RO exists that we can mess with! Rename/dismiss them
 						if (other_ros.length > 0) { 
 							console.log(`Dismissing ${other_ros[0]}`);
-							window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + other_ros[0]);
+							window.location = other_ros[0];
+							//window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + other_ros[0]);
 						// No other ROs exist, let's rename the governor!
 						} else { 
 							console.log("Renaming governor");
