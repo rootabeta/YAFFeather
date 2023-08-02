@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.6.7
+YAFFeather v3.6.8
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -23,8 +23,11 @@ X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
 CHANGELOG:
+3.6.8
+Improved resignation further to avoid simultaneity in the first place
+
 3.6.7
-/!\ Fixed potential simuntaneity issue in resignations
+/!\ Fixed potential simultaneity issue in resignations
 Started using Beta editions to test non-critical changes
 Changed reports key from G to V following user request
 Enhanced error handling
