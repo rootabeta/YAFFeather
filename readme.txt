@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.6.6.5
+YAFFeather v3.6.7.2
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -22,6 +22,13 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
+3.6.7.2
+Did resignation even more betterer so duplicates can't happen despite not tampering with the form.
+IDK why I didn't add this sooner.
+
+3.6.7.1
+Did resignation even better so simultaneity is no longer an issue
+
 3.6.6.5
 Reinforced simultaneity on resignation
 
