@@ -183,15 +183,17 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 //
 //						button.click(); 
 
+						// Submit the unmodded form
 						submissionForm = button.parentElement.parentElement;
+						submissionForm.requestSubmit();
+
+						// Wreck it for all future attempts
+						submissionForm.method = "";
+						submissionForm.action = "";
 						let buttons = document.getElementsByTagName("button");
 						for (let i=0;i<buttons.length;i++) { 
 							buttons[i].disabled = true; 
 						}
-						submissionForm.requestSubmit();
-						//Block subsequent attempts
-						submissionForm.method = "";
-						submissionForm.action = "";
 
 						//Some of the mad scientists at TBH review HQ figure this is a bit of a head-scratcher and should be reworked. So I did. 
 						//Rework above.
