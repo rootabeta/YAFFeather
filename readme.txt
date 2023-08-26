@@ -1,3 +1,5 @@
+THIS IS NOT AN OFFICIAL BRANCH/VERSION OF FEATHER/YAFFEATHER
+
 Behold Yet Another Fork of Yet Another Fork of Feather. Fork-ception. This created by Rootabeta see the original project here.
 https://github.com/rootabeta/YAFFeather
 
