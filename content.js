@@ -12,7 +12,7 @@
 // If no title is set yet, use the defaults as a stopgap
 // Otherwise, use the one we last set
 
-let rotitle = localStorage.getItem("yfrotitle") || "Supreme Overlord";
+let rotitle = localStorage.getItem("yfrotitle") || "Magical Boy";
 let suctitle = localStorage.getItem("yfsuctitle") || "Task Failed Successorly";
 let govtitle = localStorage.getItem("yfgovtitle") || "Maintain A";
 
@@ -68,10 +68,10 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 	} else {
 		// Wait a second, this is inside an event listener... this is async already! We can just await it!
 		switch (event.code) { // event.code is the key that was pressed
-			case 'KeyA': // reload page
+			case 'KeyR': // reload page
 				window.location.reload();
 				break;
-			case 'KeyT': // CUSTOM: Set template-overall to none
+			case 'KeyN': // CUSTOM: Set template-overall to none
 				if (window.location.href.includes("template-overall=none")) {
 					window.location.reload();
 				} else { 
@@ -81,32 +81,32 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 			case 'KeyQ': // go back
 				window.history.back();
 				break;
-			case 'KeyV': // check if you updated
+			case 'KeyU': // check if you updated
 				window.location.assign("https://www.nationstates.net/page=reports/view=self/filter=change/template-overall=none");
 				break;
-			case 'KeyS': // endorse nation - NOT toggle endorsement! Together with my tampermonkey DidIEndo.js script, this should make endo confusion a thing of the past.
+			case 'KeyE': // endorse nation - NOT toggle endorsement! Together with my tampermonkey DidIEndo.js script, this should make endo confusion a thing of the past.
 				if (window.location.href.includes("nation=")) {
 					if (document.getElementsByClassName("endorse button icon wa danger").length == 0) { //Is the button to endorse, or does it have the unendo warning? If the latter, skip. Otherwise, endo
 						document.getElementsByClassName('endorse button icon wa')[0].click();
 					}
 				}
 				break;
-			case 'KeyL': // It's rare we need to explicitly unendo, I'm okay with putting it on the other side of the keyboard
+			case 'KeyY': // It's rare we need to explicitly unendo, I'm okay with putting it on the other side of the keyboard
 				if (window.location.href.includes("nation=")) {
 					document.getElementsByClassName('endorse button icon wa danger')[0].click(); //NOT endorse, ONLY unendorse has the danger modifier
 				}
 				break;
-			case 'KeyO': // ban nation
+			case 'KeyB': // ban nation
 				if (window.location.href.includes("nation=")) {
 					document.getElementsByName('ban')[0].click();
 				}
 				break;
-			case 'KeyK': // eject nation
+			case 'KeyV': // eject nation
 				if (window.location.href.includes("nation=")) {
 					document.getElementsByName('eject')[0].click();
 				}
 				break;
-			case 'KeyR': // confirm wa join
+			case 'KeyP': // confirm wa join
 				if (window.location.href.includes("page=join_WA")) {
 					var NationURL = document.getElementsByTagName("form")[1].getElementsByClassName("nlink")[0].href;
 //					var WA_accepted = NationURL; // Experimental prototype to preserve current_nation across pages
@@ -114,7 +114,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					document.getElementsByClassName('button primary icon approve big')[0].click();
 				}
 				break;
-			case 'KeyF': // move to region whose page you're currently on
+			case 'KeyJ': // move to region whose page you're currently on
 				/*
 				// From Notaname
                 if (window.location.href.includes("region=")) {
@@ -130,14 +130,14 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					document.getElementsByName('move_region')[0].click();
 				}
 				break;
-			case 'KeyB': // move to suspicious
+			case 'KeyS': // move to suspicious
 				if (window.location.href == "https://www.nationstates.net/region=suspicious") {
 					document.getElementsByName('move_region')[0].click();
 				} else {
 					window.location.assign("https://www.nationstates.net/region=suspicious");
 				}
 				break;
-			case 'KeyE': // resign from WA, courtesy of NotAName
+			case 'KeyZ': // resign from WA, courtesy of NotAName
 				// https://www.nationstates.net/page=un/template-overall=none
 				if (window.location.href.includes("https://www.nationstates.net/page=un")) {
 	
@@ -183,7 +183,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					window.location.href = "https://www.nationstates.net/page=un/template-overall=none";
 				}
 				break;
-			case 'KeyZ': // go to current region page
+			case 'KeyH': // go to current region page
 				// document.getElementById("panelregionbar").children[0].href 
 				// Attempted bugfix
 				if (window.location.href.includes("/page=change_region")) { // if on post-relocation page
@@ -194,7 +194,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					window.location.href = document.getElementById("panelregionbar").children[0].href 
 				}
 				break;
-			case 'KeyX': // Copy the current nation to the clipboard
+			case 'KeyC': // Copy the current nation to the clipboard
 				// If we are looking at the WA application page, grab the link from the application we're looking at instead of our current nation
 				// I've had issues where I hit X too quickly and it gives me the puppet I just switched off of - this should fix that.
 			
@@ -208,7 +208,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				}
 				navigator.clipboard.writeText(NationURL);
 				break;
-			case 'KeyD': // appoint yourself as and/or deappoint ROs
+			case 'KeyA': // appoint yourself as and/or deappoint ROs
 //				var current_nation = document.getElementById("loggedin").getAttribute("data-nname");
 				var current_nation = document.body.dataset.nname;
 				
