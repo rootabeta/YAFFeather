@@ -15,6 +15,7 @@
 let rotitle = localStorage.getItem("yfrotitle") || "Supreme Overlord";
 let suctitle = localStorage.getItem("yfsuctitle") || "Task Failed Successorly";
 let govtitle = localStorage.getItem("yfgovtitle") || "Maintain A";
+let jumppoint = localStorage.getItem("yfjumppoint") || "suspicious";
 
 
 function loadSettings(settings) { 
@@ -41,6 +42,11 @@ function loadSettings(settings) {
 	if (settings.suc) { 
 		suctitle = settings.suc;
 		localStorage.setItem("yfsuctitle",settings.suc);
+	}
+
+	if (settings.jp) { 
+		jumppoint = settings.jp;
+		localStorage.setItem("yfjumppoint",settings.jp);
 	}
 }
 
@@ -131,10 +137,10 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				}
 				break;
 			case 'KeyB': // move to suspicious
-				if (window.location.href == "https://www.nationstates.net/region=suspicious") {
+				if (window.location.href == "https://www.nationstates.net/region=" + jumppoint) {
 					document.getElementsByName('move_region')[0].click();
 				} else {
-					window.location.assign("https://www.nationstates.net/region=suspicious");
+					window.location.assign("https://www.nationstates.net/region=" + jumppoint);
 				}
 				break;
 			case 'KeyE': // resign from WA, courtesy of NotAName
