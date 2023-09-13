@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.6.8
+YAFFeather v3.6.9
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -23,6 +23,9 @@ X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
 CHANGELOG:
+3.6.9
+Added option to specify a custom JP
+
 3.6.8
 Improved resignation further to avoid simultaneity in the first place
 
