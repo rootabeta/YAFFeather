@@ -23,6 +23,9 @@ X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
 CHANGELOG:
+3.6.9
+Added option for custom jumppoint
+
 3.6.8
 Improved resignation further
 
