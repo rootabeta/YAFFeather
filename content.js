@@ -184,6 +184,12 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 						// Prevent duplicates by removing the means of execution. 
 						submissionForm.remove();
 					}
+				// WA Acceptance - E will now accept WA, allowing for easier switching at high speeds
+				} else if (window.location.href.includes("page=join_WA")) {
+					var NationURL = document.getElementsByTagName("form")[1].getElementsByClassName("nlink")[0].href;
+					navigator.clipboard.writeText(NationURL);
+					document.getElementsByClassName('button primary icon approve big')[0].click();
+				// If not on a recognized page, begin resignation
 				} else {
 					//window.location.assign("https://www.nationstates.net/page=un");
 					window.location.href = "https://www.nationstates.net/page=un/template-overall=none";
