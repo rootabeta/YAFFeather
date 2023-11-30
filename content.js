@@ -1,13 +1,3 @@
-// Defaults in case the settings don't load fast enough
-// This is especially important for fast switchers
-// I *could* solve this with an await, but that introduces unpredictable lag
-// Since the only people who will run into these are the fast switchers, 
-// That lag is unacceptable. Better to run the risk of a race condition.
-
-// let rotitle = "Supreme Overlord";
-// let suctitle = "Task Failed Successorly";
-// let govtitle = "Maintain A";
-
 // Reworked solution using localStorage to persist settings across pageloads
 // If no title is set yet, use the defaults as a stopgap
 // Otherwise, use the one we last set
@@ -24,10 +14,6 @@ function loadSettings(settings) {
 	//This way, we can change things and have it reflected on the next refresh
 
 	console.log("Loaded settings");
-
-//	rotitle = rotitle || "Supreme Overlord";
-//	suctitle = suctitle || "Task Failed Successorly";
-//	govtitle = govtitle || "Maintain A";
 
 	if (settings.ro) { 
 		rotitle = settings.ro;
@@ -59,10 +45,6 @@ function settingsFailed(error) {
 	let rotitle = localStorage.getItem("yfrotitle") || "Supreme Overlord";
 	let suctitle = localStorage.getItem("yfsuctitle") || "Task Failed Successorly";
 	let govtitle = localStorage.getItem("yfgovtitle") || "Maintain A";
-
-	//let rotitle = "Supreme Overlord";
-	//let suctitle = "Task Failed Successorly";
-	//let govtitle = "Maintain A";
 }
 
 const getting = browser.storage.sync.get();
@@ -72,7 +54,6 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 	if (event.shiftKey || event.ctrlKey || event.altKey || document.activeElement.tagName == 'INPUT' || document.activeElement.tagName == 'TEXTAREA') { // locks you out of the script while you're holding down a modifier key or typing in an input
 		return;
 	} else {
-		// Wait a second, this is inside an event listener... this is async already! We can just await it!
 		switch (event.code) { // event.code is the key that was pressed
 			case 'KeyA': // reload page
 				window.location.reload();
@@ -121,17 +102,6 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				}
 				break;
 			case 'KeyF': // move to region whose page you're currently on
-				/*
-				// From Notaname
-                if (window.location.href.includes("region=")) {
-                    if (document.getElementsByName('move_region').length == 0) window.location.reload();
-                    else document.getElementsByName('move_region')[0].click();
-                } else if (window.location.href.includes("change_region")) {
-                    document.getElementsByClassName('rlink')[0].click();
-                }
-                break;
-				*/
-				
 				if (window.location.href.includes("region=")) {
 					document.getElementsByName('move_region')[0].click();
 				}
@@ -143,7 +113,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					window.location.assign("https://www.nationstates.net/region=" + jumppoint);
 				}
 				break;
-			case 'KeyE': // resign from WA, courtesy of NotAName
+			case 'KeyE': 
 				// https://www.nationstates.net/page=un/template-overall=none
 				if (window.location.href.includes("https://www.nationstates.net/page=un")) {
 	
@@ -184,6 +154,12 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 						// Prevent duplicates by removing the means of execution. 
 						submissionForm.remove();
 					}
+				// WA Acceptance - E will now accept WA, allowing for easier switching at high speeds
+				} else if (window.location.href.includes("page=join_WA")) {
+					var NationURL = document.getElementsByTagName("form")[1].getElementsByClassName("nlink")[0].href;
+					navigator.clipboard.writeText(NationURL);
+					document.getElementsByClassName('button primary icon approve big')[0].click();
+				// If not on a recognized page, begin resignation
 				} else {
 					//window.location.assign("https://www.nationstates.net/page=un");
 					window.location.href = "https://www.nationstates.net/page=un/template-overall=none";
@@ -204,7 +180,6 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				// If we are looking at the WA application page, grab the link from the application we're looking at instead of our current nation
 				// I've had issues where I hit X too quickly and it gives me the puppet I just switched off of - this should fix that.
 			
-				//Safety net, since I can't test WA right now - make sure we have a second form to query.
 				if (window.location.href.includes("https://www.nationstates.net/page=join_WA?nation=") && document.getElementsByTagName("form").length > 1) { 
 					// First form is login banner - second form is application. Isolate the nation link and copy to clipboard. 
 					var NationURL = document.getElementsByTagName("form")[1].getElementsByClassName("nlink")[0].href; 
@@ -232,7 +207,6 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				}
 				
 				// If on the regional control page, open own regional officer page
-				// TODO: Check if RO, then de-RO everyone else in rapid order until all is done
 				else if (window.location.href.includes("https://www.nationstates.net/page=region_control")) {
 					// document.getElementById("rcontrol_officers").tBodies[0].rows[i].children[4].children[0].children[0].href 
 					var encounteredSelf = false;
@@ -307,14 +281,12 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				}
 				// If on governor's page, rename 
 				else if (window.location.href.includes("office=governor")) { 
-					// TODO: Custom governor name
-					document.getElementsByName("office_name")[0].value = govtitle; //"Catgirl :3";
+					document.getElementsByName("office_name")[0].value = govtitle;
 					document.getElementsByName('editofficer')[0].click();
 				}
 				// If on on own regional officer page, assign officer role
 				else if (window.location.href.includes(current_nation) && window.location.href.includes("page=regional_officer")) {
-					// TODO: Custom RO name
-					document.getElementsByName("office_name")[0].value = rotitle; // "Supreme Overlord";
+					document.getElementsByName("office_name")[0].value = rotitle;
 					document.getElementsByName("authority_A")[0].checked = true;
 					document.getElementsByName("authority_C")[0].checked = true;
 					document.getElementsByName("authority_E")[0].checked = true;
@@ -326,8 +298,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				else if (window.location.href.includes("regional_officer")) {
 					// If has succession authority, remove all other permissions, since successors cannot be removed by exec WA. Thanks Nota!
 					if(document.getElementsByName("authority_S")[0].checked) { 
-						// TODO: Custom successor name
-						document.getElementsByName("office_name")[0].value = suctitle; // "Nya~";
+						document.getElementsByName("office_name")[0].value = suctitle;
 						document.getElementsByName("authority_A")[0].checked = false;
 						document.getElementsByName("authority_B")[0].checked = false;
 						document.getElementsByName("authority_C")[0].checked = false;
