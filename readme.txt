@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.6.9.1
+YAFFeather v3.6.9.2
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -22,6 +22,10 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
+3.6.9.2
+/!\ Removed legacy restricted action (reports page) 
+Enhanced dismissal to account for maxed-out RO slots
+
 3.6.9.1
 Changed behavior of E key to accept WA invite when looking at a WA invitation, rather than attempting to apply to the WA
 
