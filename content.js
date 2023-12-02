@@ -87,9 +87,12 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 			case 'KeyQ': // go back
 				window.history.back();
 				break;
-			case 'KeyV': // check if you updated
+
+// Opening the reports page is actually a restricted action? I haven't heard tell of any issues yet, but just in case, this is going bye-bye.
+/*			case 'KeyV': // check if you updated
 				window.location.assign("https://www.nationstates.net/page=reports/view=self/filter=change/template-overall=none");
 				break;
+*/
 			case 'KeyS': // endorse nation - NOT toggle endorsement! Together with my tampermonkey DidIEndo.js script, this should make endo confusion a thing of the past.
 				if (window.location.href.includes("nation=")) {
 					if (document.getElementsByClassName("endorse button icon wa danger").length == 0) { //Is the button to endorse, or does it have the unendo warning? If the latter, skip. Otherwise, endo
@@ -295,14 +298,22 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 						if (other_ros.length > 0) { 
 							console.log(`Dismissing ${other_ros[0]}`);
 							window.location = other_ros[0];
-							//window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + other_ros[0]);
+							window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + other_ros[0]);
 						// No other ROs exist, let's rename the governor!
-						} else { 
+						} else {
 							console.log("Renaming governor");
 							window.location.assign("https://www.nationstates.net/page=regional_officer/office=governor");
 						}
+
+					// If we're not appointed, but other_ros.length >= 12, then we need to dismiss one of them at random
+					} else if (other_ros.length >= 12) {
+						console.log("Too many ROs");
+						// Select an RO at random that we haven't touched (no successors!), and dismiss
+						window.location = other_ros[0];
+
+					// We have room for another RO, throw ourselves on
 					} else { 
-						console.log("Missing self");
+						console.log("Missing self!");
 						// Just in case
 						if (!current_nation) { 
 							current_nation = document.body.dataset.nname;
@@ -311,6 +322,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					}
 
 				}
+	
 				// If on governor's page, rename 
 				else if (window.location.href.includes("office=governor")) { 
 					// TODO: Custom governor name
