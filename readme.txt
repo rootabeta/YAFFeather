@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.7.0
+YAFFeather v3.7.1
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -9,7 +9,6 @@ KEY LIST:
 A - Refresh page
 T - Set template-overall=none for faster pageloads
 Q - Go back
-V - Check if your nation updated
 S - Endorse nation
 L - Unendorse nation
 O - Ban nation
@@ -23,6 +22,9 @@ X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
 CHANGELOG:
+3.7.1
+Axed reports page hotkey
+
 3.7.0
 Added ability to press E to join the WA instead of R (R still behaves as previous) 
 

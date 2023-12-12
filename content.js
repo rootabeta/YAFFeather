@@ -68,9 +68,9 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 			case 'KeyQ': // go back
 				window.history.back();
 				break;
-			case 'KeyV': // check if you updated
-				window.location.assign("https://www.nationstates.net/page=reports/view=self/filter=change/template-overall=none");
-				break;
+//			case 'KeyV': // check if you updated
+//				window.location.assign("https://www.nationstates.net/page=reports/view=self/filter=change/template-overall=none");
+//				break;
 			case 'KeyS': // endorse nation - NOT toggle endorsement! Together with my tampermonkey DidIEndo.js script, this should make endo confusion a thing of the past.
 				if (window.location.href.includes("nation=")) {
 					if (document.getElementsByClassName("endorse button icon wa danger").length == 0) { //Is the button to endorse, or does it have the unendo warning? If the latter, skip. Otherwise, endo
