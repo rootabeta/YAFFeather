@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.7.0-chrome
+YAFFeather v3.7.1-chrome
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -23,6 +23,9 @@ X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
 CHANGELOG:
+3.7.1
+Removed reports page hotkey
+
 3.7.0
 Added ability to press E to join the WA on invites (R functionality is unchanged) 
 
