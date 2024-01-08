@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.6.9.2
+YAFFeather v3.6.9.3
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -22,6 +22,9 @@ Z - Go to current region page
 X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
+3.6.9.3
+Added function to cancel F/S transition if occuring
+
 3.6.9.2
 /!\ Removed legacy restricted action (reports page) 
 Enhanced dismissal to account for maxed-out RO slots

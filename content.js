@@ -299,10 +299,16 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 							console.log(`Dismissing ${other_ros[0]}`);
 							window.location = other_ros[0];
 							window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + other_ros[0]);
-						// No other ROs exist, let's rename the governor!
+						// No other ROs exist, let's rename the governor! (Or cancel F/S transition, if it's in progress)
 						} else {
-							console.log("Renaming governor");
-							window.location.assign("https://www.nationstates.net/page=regional_officer/office=governor");
+							let frontier_button = document.getElementsByName("change_frontier")[0];
+							if (frontier_button.value == "cancel") { 
+								console.log("Cancelling F/S transition");
+								frontier_button.click();
+							} else { 
+								console.log("Renaming governor");
+								window.location.assign("https://www.nationstates.net/page=regional_officer/office=governor");
+							}
 						}
 
 					// If we're not appointed, but other_ros.length >= 12, then we need to dismiss one of them at random
