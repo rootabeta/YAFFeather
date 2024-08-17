@@ -1,5 +1,5 @@
 ===============================
-YAFFeather v3.7.1
+YAFFeather v3.7.2
 
 Derivative extension of SweezeBreeze, with removed and added stuff, tailored towards raiders/tags
 
@@ -22,6 +22,9 @@ X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
 CHANGELOG:
+3.7.2
+Added button to cancel F/S transition if one is occuring
+
 3.7.1
 Axed reports page hotkey
 
