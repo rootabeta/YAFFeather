@@ -1,3 +1,6 @@
+# Depreciated Branch
+This branch is depreciated - future beta branches will be developed on a branch-by-branch basis
+
 ===============================
 YAFFeather v3.6.9.3
 
