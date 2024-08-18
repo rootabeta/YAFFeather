@@ -1,5 +1,9 @@
 function saveOptions(e) {
   e.preventDefault();
+  if (document.querySelector("#mainnation").value == "") { 
+	alert("main nation is a required parameter");
+	return;
+  }
 
   browser.storage.sync.set({ 
 	main_nation: document.querySelector("#mainnation").value,
@@ -12,7 +16,7 @@ function saveOptions(e) {
 
 function restoreOptions() {
   function setCurrentChoice(result) {
-	document.querySelector("#mainnation").value = result.main_nation;
+	document.querySelector("#mainnation").value = result.main_nation || "";
 	document.querySelector("#ro").value = result.ro || "Supreme Overlord";
 	document.querySelector("#gov").value = result.gov || "Maintain A";
 	document.querySelector("#suc").value = result.suc || "Task Failed Successorly";
