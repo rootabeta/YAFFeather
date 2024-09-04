@@ -1,7 +1,7 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "YAFFeather",
-  "version": "3.8.0",
+  "version": "3.7.1",
   "description": "Yet Another Fork of Feather. Originally by sw33ze, tweaked by Alex.",
   "icons": {
     "16": "icons/icon16.png",
@@ -21,11 +21,5 @@
     "page":"settings.html"
   },
 
-  "permissions":["storage"],
-
-  "browser_specific_settings":{
-	  "gecko":{
-		  "id":"yaffeather@alexfromnationstates"
-	  }
-  }
+  "permissions":["storage"]
 }
