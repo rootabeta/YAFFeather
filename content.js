@@ -3,18 +3,10 @@
 // Otherwise, use the one we last set
 
 let yaffeather_version = browser.runtime.getManifest().version;
-let main_nation = localStorage.getItem("yfmainnation");
 let rotitle = localStorage.getItem("yfrotitle") || "Supreme Overlord";
 let suctitle = localStorage.getItem("yfsuctitle") || "Task Failed Successorly";
 let govtitle = localStorage.getItem("yfgovtitle") || "Maintain A";
 let jumppoint = localStorage.getItem("yfjumppoint") || "suspicious";
-
-if (!main_nation) { 
-	window.alert("Due to NS script rules changes, YAFFeather requires a main nation to achieve two-click ROing\nPlease open YAFFeather settings and specify your main nation, then refresh.");
-}
-
-// Identify user and add place for userclick as-needed
-let user_agent = `/?script=YAFFeather_${yaffeather_version}_by_Volstrostia_usedBy_${main_nation}&userclick=`;
 
 function loadSettings(settings) { 
 	//Whenever this function fires, we know that we have new data from settings
@@ -22,11 +14,6 @@ function loadSettings(settings) {
 	//This way, we can change things and have it reflected on the next refresh
 
 	console.log("Loaded settings");
-
-	if (settings.main_nation) { 
-		main_nation = settings.main_nation;
-		localStorage.setItem("yfmainnation",settings.main_nation);
-	}
 
 	if (settings.ro) { 
 		rotitle = settings.ro;
@@ -55,7 +42,6 @@ function settingsFailed(error) {
 
 	// Assume failed condition
 	// If we already have a good value, use that. Otherwise, use defaults.
-	let main_nation = localStorage.getItem("yfmainnation");
 	let jumppoint = localStorage.getItem("yfjumppoint") || "suspicious";
 	let rotitle = localStorage.getItem("yfrotitle") || "Supreme Overlord";
 	let suctitle = localStorage.getItem("yfsuctitle") || "Task Failed Successorly";
@@ -69,12 +55,6 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 	if (event.shiftKey || event.ctrlKey || event.altKey || document.activeElement.tagName == 'INPUT' || document.activeElement.tagName == 'TEXTAREA') { // locks you out of the script while you're holding down a modifier key or typing in an input
 		return;
 	} else {
-		// The devil made me do it - at least we still don't have simultaneity issues
-		if (!main_nation) { 
-			window.alert("Due to NS script rules changes, YAFFeather requires a main nation to achieve two-click ROing\nPlease open YAFFeather settings and specify your main nation, then refresh.");
-			return;
-		}
-
 		switch (event.code) { // event.code is the key that was pressed
 			case 'KeyA': // reload page
 				window.location.reload();
@@ -209,6 +189,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 			case 'KeyD': // appoint yourself as and/or deappoint ROs
 //				var current_nation = document.getElementById("loggedin").getAttribute("data-nname");
 				var current_nation = document.body.dataset.nname;
+				// SAVE TO CACHE
 				var userclick = Date.now();
 
 				// Assume user is logged in, but in template=none mode following a refresh/relocation
@@ -219,7 +200,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 						// If on the dossier page, we can get our user from that
 						current_nation = document.getElementsByTagName("h1")[0].outerText.toLowerCase().replace(/ /gi,"_").split("'")[0];
 						// Thanks, Obama -_-
-						window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + current_nation + user_agent + userclick);
+						window.location.assign("https://www.nationstates.net/page=regional_officer");
 					} else { 
 						window.location.assign("https://www.nationstates.net/page=region_control");
 					}
@@ -293,10 +274,11 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 						// Just in case
 						if (!current_nation) { 
 							current_nation = document.body.dataset.nname;
+							// TODO 
 						}
 
 						// NS moderation can bite me
-						window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + current_nation + user_agent + userclick);
+						window.location.assign("https://www.nationstates.net/page=regional_officer");
 					}
 
 				}
@@ -306,13 +288,13 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 					document.getElementsByName('editofficer')[0].click();
 				}
 				// If on on own regional officer page, assign officer role
-				else if (window.location.href.includes(current_nation) && window.location.href.includes("page=regional_officer")) {
+				else if (window.location.href.includes("regional_officer") && document.getElementsByTagName("select").length == 1) {
+					document.getElementsByTagName("select")[0].value = document.body.dataset.nname;
 					document.getElementsByName("office_name")[0].value = rotitle;
 					document.getElementsByName("authority_A")[0].checked = true;
 					document.getElementsByName("authority_C")[0].checked = true;
 					document.getElementsByName("authority_E")[0].checked = true;
 					document.getElementsByName("authority_P")[0].checked = true;
-//					window.alert(document.getElementsByName("office_name")[0].value);
 					document.getElementsByName('editofficer')[0].click();
 				}
 				// If on someone else's regional officer page, dismiss them (or strip permissions if successor)
@@ -333,8 +315,7 @@ document.addEventListener('keyup', function (event) { // keyup may seem less int
 				// If on none of these pages, open regional control page
 				else {
 					// Go directly to CURRENT RO page
-					// Sorry to everyone who needs to specify a useless main_nation parameter for a URL that the site can and does generate naturally
-					window.location.assign("https://www.nationstates.net/page=regional_officer/nation=" + current_nation + user_agent + userclick);
+					window.location.assign("https://www.nationstates.net/page=regional_officer");
 				}
 				break;
 		} // end switch

@@ -22,6 +22,9 @@ X - Copy current nation URL to clipboard
 D - Appoint yourself as RO/Dismiss other ROs
 ===============================
 CHANGELOG:
+3.8.1
+I removed that again because I came up with a smarter way to do self-ROing, kneel before my god-like wisdom
+
 3.8.0
 /!\ Added user-agent to comply with recent (and poorly rolled out) NS rule changes
 
